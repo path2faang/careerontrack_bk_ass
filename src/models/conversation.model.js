@@ -8,7 +8,7 @@ const conversationSchema = new mongoose.Schema({
     },
     response_conversation_transcript: String,
     
-    response_audio_url: {
+    response_text: {
         type: String,
     },
 

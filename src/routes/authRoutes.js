@@ -1,8 +1,7 @@
 import express from 'express';
 import passport from 'passport';
 import jwt from 'jsonwebtoken';
-import requireAuth from '../middlewares/auth.middleware';
-
+import requireAuth from '../middlewares/auth.middleware.js';
 const authRoutes = express.Router();
 
 // Helper function to create a JWT
@@ -11,7 +10,7 @@ const createToken = (user, secret, expiresIn) => {
 };
 
 // Initiate Google authentication
-authRoutes.get("/v1/auth", (req, res) => res.send("<a href='/v1/auth/google'>Sign In With Google </a>")) // Google Testing route
+authRoutes.get("/v1/auth", requireAuth,  (req, res) => res.status(200).json({success: false, message: "successfully fetched", data: req.user})) // )Google Testing route
 
 authRoutes.get('/v1/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
@@ -39,7 +38,7 @@ authRoutes.get('/v1/auth/google/callback', (req, res, next) => {
         });
 
         // Redirect user after successful login
-        return res.redirect('/conversation'); // Replace with your post-login route
+        return res.redirect(`${process.env.CLIENT_DOMAIN_URL}`); // Replace with your post-login route
     })(req, res, next);
 });
 
@@ -58,5 +57,6 @@ authRoutes.post("/v1/auth/logout", requireAuth, (req, res,) => {
 
     return res.sendStatus(204); //send No Content
 })
+
 
 export default authRoutes;

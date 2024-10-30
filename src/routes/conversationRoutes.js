@@ -10,9 +10,9 @@ import asyncHandlerMiddleware from '../middlewares/asyncHandlerMiddleware.js';
 
 const conversationRoutes = Router();
 
-conversationRoutes.get("/conversation", asyncHandlerMiddleware(getConversations));
-conversationRoutes.post("/conversation", requireAuth, createConversation);
-conversationRoutes.get("/conversation/:id", requireAuth, getConversationById);
+conversationRoutes.get("/conversations", asyncHandlerMiddleware(getConversations));
+conversationRoutes.post("/conversations", requireAuth, asyncHandlerMiddleware(createConversation));
+conversationRoutes.get("/conversations/:id", requireAuth, asyncHandlerMiddleware(getConversationById))
 
 
 export default conversationRoutes;

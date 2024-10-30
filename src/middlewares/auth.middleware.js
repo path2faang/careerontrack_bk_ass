@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import accountModel from '../models/account.model.js';
 
 
 const requireAuth = (req, res, next) => {
@@ -17,8 +18,11 @@ const requireAuth = (req, res, next) => {
             }
 
             // Attach user information to req for access in protected routes
+            const account = await accountModel.findOne({_id: decoded.id});
 
-            req.user = decoded;
+            if(!account) return res.sendStatus(404);
+
+            req.user = account;
             next();
         });
     } catch (error) {
