@@ -38,7 +38,7 @@ authRoutes.get('/v1/auth/google/callback', (req, res, next) => {
         });
 
         // Redirect user after successful login
-        return res.redirect(`${process.env.CLIENT_DOMAIN_URL}`); // Replace with your post-login route
+        return res.redirect(`https://assessment-career-ontrack.vercel.app`); // Replace with your post-login route
     })(req, res, next);
 });
 
