@@ -11,24 +11,28 @@ export default (app) => {
     app.use(express.json());
 
     express.urlencoded({ extended: true });
-
-    const allowedOrigins = ["https://assessment-career-ontrack.vercel.app",
+    
+    const allowedOrigins = [
+        "https://assessment-career-ontrack.vercel.app",
         "https://careerontrack-bk-ass.onrender.com",
         "https://google.com"
     ];
-
+    
     app.use(cors({
-        methods: ['POST', 'PUT', 'PATCH', 'DELETE', 'GET'],
-        credentials: true,
-        allowedHeaders: ['Authorization', 'Content-Type', 'Content-Length'],
-        origin: process.env.NODE_ENV == "dev" ? ["http://localhost:3000"] : function (origin, callback) {
-            if (!origin) return callback(null, true); // Allow requests with no origin
-            if (allowedOrigins.indexOf(origin) === -1) {
-                return callback(new Error('CORS not allowed for this origin'), false);
+        origin: (origin, callback) => {
+            if (process.env.NODE_ENV === "dev") {
+                callback(null, true); // Allow localhost in development
+            } else if (!origin || allowedOrigins.includes(origin)) {
+                callback(null, true);
+            } else {
+                callback(new Error("CORS not allowed for this origin"), false);
             }
-            return callback(null, origin);
-        }
+        },
+        methods: ['POST', 'PUT', 'PATCH', 'DELETE', 'GET'],
+        allowedHeaders: ['Authorization', 'Content-Type', 'Content-Length', 'Cookie', 'Accept'],
+        credentials: true
     }));
+    
 
     app.use(helmet());
 

@@ -10,7 +10,7 @@ const createToken = (user, secret, expiresIn) => {
 };
 
 // Initiate Google authentication
-authRoutes.get("/v1/auth", requireAuth,  (req, res) => res.status(200).json({success: false, message: "successfully fetched", data: req.user})) // )Google Testing route
+authRoutes.get("/v1/auth", requireAuth, (req, res) => res.status(200).json({ success: false, message: "successfully fetched", data: req.user })) // )Google Testing route
 
 authRoutes.get('/v1/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
@@ -27,15 +27,20 @@ authRoutes.get('/v1/auth/google/callback', (req, res, next) => {
         // Set cookies for access and refresh tokens
         res.cookie('accessToken', accessToken, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'prod', // Use secure cookies in production
-            maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+            secure: process.env.NODE_ENV === 'prod', // Secure in prod
+            sameSite: process.env.NODE_ENV === 'prod' ? 'none' : 'lax',
+            maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+            signed: process.env.NODE_ENV === 'prod'
         });
-
+        
         res.cookie('refreshToken', refreshToken, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'prod', // Use secure cookies in production
-            maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
+            secure: process.env.NODE_ENV === 'prod', // Secure in prod
+            sameSite: process.env.NODE_ENV === 'prod' ? 'none' : 'lax',
+            maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+            signed: process.env.NODE_ENV === 'prod'
         });
+        
 
         // Redirect user after successful login
         return res.redirect(`https://assessment-career-ontrack.vercel.app`); // Replace with your post-login route
