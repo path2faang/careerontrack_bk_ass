@@ -12,7 +12,10 @@ export default (app) => {
 
     express.urlencoded({ extended: true });
 
-    const allowedOrigins = ["https://assessment-career-ontrack.vercel.app"];
+    const allowedOrigins = ["https://assessment-career-ontrack.vercel.app",
+        "https://careerontrack-bk-ass.onrender.com",
+        "https://google.com"
+    ];
 
     app.use(cors({
         methods: ['POST', 'PUT', 'PATCH', 'DELETE', 'GET'],
