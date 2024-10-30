@@ -12,6 +12,8 @@ export default (app) => {
 
     express.urlencoded({ extended: true });
 
+    const allowedOrigins = ["https://assessment-career-ontrack.vercel.app"];
+
     app.use(cors({
         methods: ['POST', 'PUT', 'PATCH', 'DELETE', 'GET'],
         credentials: true,
