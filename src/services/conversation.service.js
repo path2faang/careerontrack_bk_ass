@@ -7,7 +7,7 @@ export const createConversation = async (req, res, _next) => {
         asked_conversation_data,
     } = req.body;
 
-    const account_ref = req?.user?._id ?? req.ip;
+    const account_ref = req?.user?._id ?? null;
 
     let response_text = null;
     if (asked_conversation_data.includes("hello")) {
